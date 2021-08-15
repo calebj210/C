@@ -1,0 +1,4 @@
+Rabbit  14 minutes, 1.05 seconds
+Turtle  11 minutes, 4.01 seconds
+
+

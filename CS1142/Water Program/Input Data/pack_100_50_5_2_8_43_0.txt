@@ -1,0 +1,10 @@
+Field size: 100 x 50
+Total sprinklers: 5
+Radius: min 2, max 8, avg 4.8000, mode 4
+Add 0, (16, 8) r=8
+Add 4, (33, 16) r=6
+Add 2, (52, 27) r=4
+Add 3, (40, 31) r=4
+Add 1, (72, 26) r=2
+Sprinklers added: 5
+Covered area: 8.5451%
