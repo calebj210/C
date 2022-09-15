@@ -23,6 +23,7 @@ int main() {
     push(stack, 3.0);
     push(stack, 4.0);
     push(stack, 5.0);
+    push(stack, 6.0);
 
     if (isFull(stack)) {
         printf("Stack is full\n");
@@ -37,6 +38,8 @@ int main() {
     if (isEmpty(stack)) {
         printf("Stack is empty\n");
     }
+    pop(stack);
+    peek(stack);
 
     freeStack(stack);
 

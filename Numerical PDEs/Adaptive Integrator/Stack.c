@@ -57,8 +57,8 @@ int isFull(Stack* pt) {
 double peek(Stack* pt) {
     // Check if stack is empty
     if (isEmpty(pt)) {
-        printf("Stack is empty!!!\nProgram Terminated\n");
-        exit(EXIT_FAILURE);
+        printf("\n\nStack is empty!!!\n\n");
+        return -1.0;
     }
 
     return pt -> items[pt -> top];
@@ -69,8 +69,8 @@ double peek(Stack* pt) {
  */
 void push(Stack* pt, double x) {
     if (isFull(pt)) {
-        printf("Stack is full!!!\nProgram Terminated\n");
-        exit(EXIT_FAILURE);
+        printf("\n\nStack is full!!!\n\n");
+        return; 
     }
 
     pt -> items[++pt->top] = x;
@@ -82,8 +82,8 @@ void push(Stack* pt, double x) {
 double pop(Stack* pt) {
     // Check if stack is empty
     if(isEmpty(pt)) {
-        printf("Stack is empty!!!\nProgram Terminated\n");
-        exit(EXIT_FAILURE);
+        printf("\n\nStack is empty!!!\n\n");
+        return -1.0;
     }
 
     return pt -> items[pt -> top--];
