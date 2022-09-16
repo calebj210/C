@@ -12,8 +12,8 @@ typedef struct {
     double* w;
 } GLNW;
 
-void     initGLNW(GLNW* nw, int N);
-void     freeGLNW(GLNW* nw);
-void     glNW(GLNW* nw);
+void initGLNW(GLNW* nw, int N);
+void freeGLNW(GLNW* nw);
+void glNW(GLNW* nw);
 
 #endif
