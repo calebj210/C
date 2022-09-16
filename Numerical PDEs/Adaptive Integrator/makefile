@@ -12,11 +12,17 @@ TestStack: TestStack.c Stack.o
 TestGaussLeg: TestGaussLeg.c GaussLeg.o
 	${CC} ${CFLAGS} TestGaussLeg.c GaussLeg.o -o TestGaussLeg ${LDFLAGS}
 
+TestQuad: TestQuad.c Quad.o GaussLeg.o
+	${CC} ${CFLAGS} TestQuad.c Stack.o Quad.o GaussLeg.o -o TestQuad ${LDFLAGS}
+
 Stack.o: Stack.c Stack.h
 	${CC} ${CFLAGS} -c Stack.c
 
 GaussLeg.o: GaussLeg.c GaussLeg.h
 	${CC} ${CFLAGS} -c GaussLeg.c ${LDFLAGS}
+
+Quad.o: Quad.c Quad.h GaussLeg.o Stack.o
+	${CC} ${CFLAGS} -c Quad.c ${LDFLAGS}
 
 runStackTest: TestStack
 	${VL} ${VLFLAGS} ./TestStack
@@ -24,5 +30,8 @@ runStackTest: TestStack
 runGaussLegTest: TestGaussLeg
 	${VL} ${VLFLAGS} ./TestGaussLeg
 
+runQuadTest: TestQuad
+	${VL} ${VFLAGS} ./TestQuad
+
 clean:
-	rm -f TestStack TestGaussLeg *.o
+	rm -f TestStack TestGaussLeg TestQuad *.o
