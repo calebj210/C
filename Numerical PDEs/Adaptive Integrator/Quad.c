@@ -2,7 +2,7 @@
  * Efficient adaptive quadrature
  *
  * Author: Caleb Jacobs
- * Date last modified: 16-Sep-2022
+ * Date last modified: 17-Sep-2022
  */
 
 #include "Quad.h"
@@ -25,27 +25,29 @@ double gaussQuad(double a, double b, double (*f)(double), GLNW nw) {
     return c1 * sum;
 }
 
-double adaptQuad(double a, double b, double (*f)(double), int deg, int maxDepth, double tol) {
+double adaptQuad(double a, double b, double (*f)(double), int deg, int maxIntervals, double tol) {
     GLNW nw;                        // Gauss-Legendre node and weight initialization
     initGLNW(&nw, deg);
     glNW(&nw);
 
-    double left[maxDepth];  // Left endpoint array
-    double right[maxDepth]; // Right endpoint array
-    double s[maxDepth];     // Sub integral array
+    double left[maxIntervals];  // Left endpoint array
+    double right[maxIntervals]; // Right endpoint array
+    double s[maxIntervals];     // Sub integral array
 
     left[0]  = a;
     right[0] = b;
     s[0]     = gaussQuad(a, b, f, nw);
 
-    int j = 0;              // Depth counter
+    int i;
+    int j = 0;              // Current depth counter
     double I = 0;           // Working integral estimate
 
-    for (int i = 1; i < maxDepth; i++) {
-        double c  = (left[j] + right[j]) / 2;
-        double s1 = gaussQuad(left[j], c, f, nw);
-        double s2 = gaussQuad(c, right[j], f, nw);
+    for (i = 1; i < maxIntervals; i++) {
+        double c  = (left[j] + right[j]) / 2;       // Middle of interval
+        double s1 = gaussQuad(left[j], c, f, nw);   // Integral of left interval
+        double s2 = gaussQuad(c, right[j], f, nw);  // Integral of right interval
 
+        // Construct integral via interval refinement
         if (fabs(s1 + s2 - s[j]) > tol) {
             left[j + 1]  = left[j];
 
@@ -60,11 +62,12 @@ double adaptQuad(double a, double b, double (*f)(double), int deg, int maxDepth,
             j++;
         } else {
             I += s1 + s2;
-            printf("I = %10.16f\n", I);
             j--;
         }
 
         if (j < 0) {
+            printf("Converged: subintervals used = %d\n", 2 * i);
+
             freeGLNW(&nw);
             return I;
         }
@@ -72,5 +75,7 @@ double adaptQuad(double a, double b, double (*f)(double), int deg, int maxDepth,
 
     freeGLNW(&nw);
 
-    return -210.0;
+    printf("Failed to converge subintervals used = %d\n", 2 * i);
+
+    return 0.0;
 }

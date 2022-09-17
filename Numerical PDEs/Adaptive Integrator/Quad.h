@@ -5,6 +5,6 @@
 #include "Stack.h"
 
 double gaussQuad(double a, double b, double (*f)(double), GLNW nw);
-double adaptQuad(double a, double b, double (*f)(double), int deg, int maxDepth, double tol);
+double adaptQuad(double a, double b, double (*f)(double), int deg, int maxIntervals, double tol);
 
 #endif
