@@ -26,19 +26,51 @@ double gaussQuad(double a, double b, double (*f)(double), GLNW nw) {
 }
 
 double adaptQuad(double a, double b, double (*f)(double), int deg, int maxDepth, double tol) {
-    GLNW nw;                            // Gauss-Legendre node and weight initialization
+    GLNW nw;                        // Gauss-Legendre node and weight initialization
     initGLNW(&nw, deg);
     glNW(&nw);
 
-    Stack* left  = newStack(maxDepth);  // Left endpoint stack
-    Stack* right = newStack(maxDepth);  // Right endpoint stack
+    double left[maxDepth];  // Left endpoint array
+    double right[maxDepth]; // Right endpoint array
+    double s[maxDepth];     // Sub integral array
 
-    push(left,  a);                     // Add left endpoint
-    push(right, b);                     // Add right endpoint
-    
+    left[0]  = a;
+    right[0] = b;
+    s[0]     = gaussQuad(a, b, f, nw);
 
+    int j = 0;              // Depth counter
+    double I = 0;           // Working integral estimate
+
+    for (int i = 1; i < maxDepth; i++) {
+        double c  = (left[j] + right[j]) / 2;
+        double s1 = gaussQuad(left[j], c, f, nw);
+        double s2 = gaussQuad(c, right[j], f, nw);
+
+        if (fabs(s1 + s2 - s[j]) > tol) {
+            left[j + 1]  = left[j];
+
+            right[j + 1] = c;
+
+            s[j + 1] = s1;
+
+            left[j] = c;
+
+            s[j] = s2;
+
+            j++;
+        } else {
+            I += s1 + s2;
+            printf("I = %10.16f\n", I);
+            j--;
+        }
+
+        if (j < 0) {
+            freeGLNW(&nw);
+            return I;
+        }
+    }
 
     freeGLNW(&nw);
-    freeStack(left);
-    freeStack(right);
+
+    return -210.0;
 }
