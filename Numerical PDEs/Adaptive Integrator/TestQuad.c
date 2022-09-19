@@ -44,8 +44,12 @@ double f6(double x) {
     return exp(-x * x) * 2 / sqrt(pi);
 }
 
-double f8(double x) {
+double f7(double x) {
     return pow(fabs(1 - x), -0.5);
+}
+
+double f8(double x) {
+    return pow(fabs(x), -0.5);
 }
 
 double f9(double x) {
@@ -104,7 +108,12 @@ int main(int argc, char** argv) {
 
     // |1 - x|^-(1/2) test
     printf("|1 - x|^-(1/2) for x in (0, 2), tol = 1e-9\n");
-    printf("\t  Quad = %10.15f\n", adaptQuad(0, 2, f8, deg, maxIntervals, 1e-9));
+    printf("\t  Quad = %10.15f\n", adaptQuad(0, 2, f7, deg, maxIntervals, 1e-9));
+    printf("\tActual = %10.15f\n\n", 4.0);
+    //
+    // Rescaled |1 - x|^-(1/2) test
+    printf("Rescaled |1 - x|^-(1/2) for x in (0, 2)\n");
+    printf("\t  Quad = %10.15f\n", adaptQuad(-1e5, 1e5, f8, deg, maxIntervals, tol) * pow(1e5, -0.5));
     printf("\tActual = %10.15f\n\n", 4.0);
 
     // Log(x) test
