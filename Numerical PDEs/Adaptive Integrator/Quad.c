@@ -26,7 +26,7 @@ double gaussQuad(double a, double b, double (*f)(double), GLNW nw) {
 }
 
 double adaptQuad(double a, double b, double (*f)(double), int deg, int maxIntervals, double tol) {
-    GLNW nw;                        // Gauss-Legendre node and weight initialization
+    GLNW nw;                    // Gauss-Legendre node and weight initialization
     initGLNW(&nw, deg);
     glNW(&nw);
 
@@ -39,16 +39,17 @@ double adaptQuad(double a, double b, double (*f)(double), int deg, int maxInterv
     s[0]     = gaussQuad(a, b, f, nw);
 
     int i;
-    int j = 0;              // Current depth counter
-    double I = 0;           // Working integral estimate
+    int j = 0;                  // Current depth counter
+    double I = 0;               // Working integral estimate
 
     for (i = 1; i < maxIntervals; i++) {
         double c  = (left[j] + right[j]) / 2;       // Middle of interval
-        double s1 = gaussQuad(left[j], c, f, nw);   // Integral of left interval
+        double s1 = gaussQuad(left[j], c,  f, nw);  // Integral of left interval
         double s2 = gaussQuad(c, right[j], f, nw);  // Integral of right interval
+        double diff = fabs(s1 + s2 - s[j]);         // Sub-integral difference
 
         // Construct integral via interval refinement
-        if (fabs(s1 + s2 - s[j]) > tol) {
+        if (diff > tol || isnan(diff)) {
             left[j + 1]  = left[j];
 
             right[j + 1] = c;

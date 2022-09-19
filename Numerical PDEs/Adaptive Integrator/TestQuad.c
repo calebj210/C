@@ -103,8 +103,8 @@ int main(int argc, char** argv) {
     printf("\tActual = %10.15f\n\n", 1.0);
 
     // |1 - x|^-(1/2) test
-    printf("|1 - x|^-(1/2) for x in (0, 2)\n");
-    printf("\t  Quad = %10.15f\n", adaptQuad(0, 2, f8, deg, maxIntervals, tol));
+    printf("|1 - x|^-(1/2) for x in (0, 2), tol = 1e-9\n");
+    printf("\t  Quad = %10.15f\n", adaptQuad(0, 2, f8, deg, maxIntervals, 1e-9));
     printf("\tActual = %10.15f\n\n", 4.0);
 
     // Log(x) test
@@ -116,7 +116,6 @@ int main(int argc, char** argv) {
     printf("log^2(x) for x in (0, 3)\n");
     printf("\t  Quad = %10.15f\n", adaptQuad(0, 3, f10, deg, maxIntervals, tol));
     printf("\tActual = %10.15f\n\n", 3 * (f10(3) - 2 * log(3) + 2));
-
 
     return 0;
 }
